@@ -1,5 +1,6 @@
 #import "FaceViewController.h"
 #import "PhotoViewController.h"
+#import "DetailViewController.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -34,6 +35,9 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UIButton*)getMenu:(int)index
 {
+    if (index > 2) {
+        index = 2;
+    }
     return menuBtn[index];
 }
 
@@ -150,6 +154,7 @@ static NSString *CellIdentifier = @"Cell";
     PhotoViewController *photoView;
     
     NSMutableArray *detailArray;
+    int selectedItem;
 }
 
 - (void)viewDidLoad
@@ -184,7 +189,8 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)showDetailImageView:(int)index
 {
-    NSString *photo_name = [NSString stringWithFormat:@"%@\n", [detailArray objectAtIndex:0]];
+    selectedItem = index;
+    NSString *photo_name = [NSString stringWithFormat:@"%@\n", [detailArray objectAtIndex:index]];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:@"search_face" forKey:@"type"];
     [dict setObject:photo_name forKey:@"name"];
@@ -217,9 +223,12 @@ static NSString *CellIdentifier = @"Cell";
             }
         }
         else if ([protocol isEqualToString:@"search_face"]) {
-            int a = 0;
-            int b = 0;
-            a = b;
+            NSString *host = FACE_URL;
+            NSString *url = [NSString stringWithFormat:@"%@/%@", host, [detailArray objectAtIndex:selectedItem]];
+            DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:nil bundle:nil];
+            detailViewController.url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            detailViewController.faces = [array objectAtIndex:1];
+            [self.navigationController pushViewController:detailViewController animated:YES];
         }
     }
 }

@@ -267,9 +267,6 @@
 
 -(void)onSearchClick:(id)sender
 {
-    //PhotoViewController *photoView = [[PhotoViewController alloc] initPhotoView];
-    //[self.navigationController pushViewController:photoView animated:YES];
-    
     if (!network) {
         network = [[Network alloc] init];
         network.delegate = self;
